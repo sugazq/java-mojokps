@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Booking - Mainin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Data Booking</h2>
+        <div>
+            <a href="/dashboard" class="btn btn-secondary btn-sm">Kembali ke Dashboard</a>
+            <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+        </div>
+    </div>
+
+    <div class="mb-3 text-end">
+        <a href="/booking/add" class="btn btn-primary">+ Tambah Booking</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Nama Pembooking</th>
+                    <th>Tanggal</th>
+                    <th>Kategori</th>
+                    <th>Jenis</th>
+                    <th>Harga</th>
+                    <th>Dibuat</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="booking, iter : ${bookings}">
+                    <td th:text="${iter.index + 1}"></td>
+                    <td th:text="${booking.namaPembooking}"></td>
+                    <td th:text="${booking.tanggalBooking}"></td>
+                    <td th:text="${booking.kategori}"></td>
+                    <td th:text="${booking.jenis}"></td>
+                    <td>Rp <span th:text="${booking.harga}"></span></td>
+                    <td th:text="${#temporals.format(booking.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td>
+                        <a th:href="@{'/booking/edit/' + ${booking.id}}" class="btn btn-warning btn-sm">Edit</a>
+                        <a th:href="@{'/booking/delete/' + ${booking.id}}"
+                           onclick="return confirm('Yakin ingin menghapus?')"
+                           class="btn btn-danger btn-sm">Hapus</a>
+                    </td>
+                </tr>
+                <tr th:if="${bookings.isEmpty()}">
+                    <td colspan="8" class="text-center">Belum ada data booking.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
